@@ -1,24 +1,23 @@
 #!/usr/bin/env bash
-cd /workspace
+set -e
 
-# Install backend
-composer install
-cp .env.example .env
+echo "📦 Installing composer dependencies..."
+composer install --no-interaction
+
+echo "📁 Copying .env..."
+cp .env.example .env || true
+
+echo "🔑 Generating app key..."
 php artisan key:generate
 
-# Optionally pull in React repo
-if [ ! -d frontend ]; then
-  git clone https://github.com/yourusername/react-storefront.git frontend
-fi
+echo "🛠️ Setting .env database credentials..."
+sed -i 's/DB_DATABASE=.*/DB_DATABASE=test/' .env
+sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=/' .env
+sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
 
-# Install React
-cd frontend
-npm install
-
-# Back to root, migrate DB
-cd ..
+echo "🧱 Migrating database..."
 php artisan migrate --force || true
 
-echo "✅ Setup done — ready to start services!"
-# Start services
-php artisan serve --host=
+echo "✅ Done! Now run: php artisan serve --host=0.0.0.0 --port=8000"
+echo "🌐 Access your Bagisto store at: http://localhost:8000"
