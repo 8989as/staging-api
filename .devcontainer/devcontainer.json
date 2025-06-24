@@ -1,0 +1,19 @@
+{
+  "name": "Bagisto + React (multi-repo)",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/mysql:1": {}
+  },
+  "forwardPorts": [8000, 5173],
+  "postCreateCommand": "bash .devcontainer/init_codespace.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "mikestead.dotenv",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
